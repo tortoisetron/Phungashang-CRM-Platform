@@ -3,36 +3,48 @@ import { useState, useEffect } from 'react';
 import api from '@/utils/api';
 import Navbar from '@/Components/UI/Navbar';
 
+import { useAuth } from '@/Context/AuthContext';
+
 export default function Dashboard() {
-    const [user, setUser] = useState(null);
+    const { user, loading: authLoading } = useAuth();
     const [stats, setStats] = useState({
         exams_taken: '0',
         avg_score: '0%',
         questions_solved: '0',
         study_hours: '0h'
     });
-    const [loading, setLoading] = useState(true);
+    const [loadingStats, setLoadingStats] = useState(true);
 
     useEffect(() => {
-        const fetchDashboardData = async () => {
-            try {
-                const [userRes, statsRes] = await Promise.all([
-                    api.get('/user'),
-                    api.get('/user/stats')
-                ]);
-                setUser(userRes.data);
-                setStats(statsRes.data);
-            } catch (err) {
-                console.error("Failed to fetch dashboard data", err);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchDashboardData();
-    }, []);
+        if (!authLoading && user) {
+            const fetchDashboardData = async () => {
+                try {
+                    const statsRes = await api.get('/user/stats');
+                    setStats(statsRes.data);
+                } catch (err) {
+                    console.error("Failed to fetch dashboard content", err);
+                } finally {
+                    setLoadingStats(false);
+                }
+            };
+            fetchDashboardData();
+        }
+    }, [user, authLoading]);
 
-    if (loading) return <div className="min-h-screen flex items-center justify-center bg-slate-50 font-sans">Loading Dashboard...</div>;
-    if (!user) return <div className="min-h-screen flex items-center justify-center bg-slate-50 font-sans">Please login to view dashboard.</div>;
+    if (authLoading || loadingStats) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-slate-50">
+                <div className="flex flex-col items-center gap-4">
+                    <div className="relative w-12 h-12">
+                        <div className="absolute inset-0 border-4 border-slate-200 rounded-full"></div>
+                        <div className="absolute inset-0 border-4 border-primary rounded-full border-t-transparent animate-spin"></div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    if (!user) return null; // ProtectedRoute will handle redirect
 
     return (
         <div className="min-h-screen bg-slate-50 font-sans">

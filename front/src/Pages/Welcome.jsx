@@ -12,9 +12,9 @@ export default function Welcome() {
         const fetchData = async () => {
             try {
                 const prodRes = await api.get('/products');
-                setProducts(prodRes.data.slice(0, 6));
+                // Use 4 products for the first row, maybe we can slice more for second row later
+                setProducts(prodRes.data);
             } catch (err) {
-                // Use placeholder data if API fails
                 setProducts([]);
             } finally {
                 setLoading(false);
@@ -38,121 +38,199 @@ export default function Welcome() {
         }
     ];
 
-    const features = [
-        { title: "Comprehensive Coverage", desc: "Extensive collection of test banks and study guides.", icon: "📚" },
-        { title: "High Success Rate", desc: "Used by thousands of students to pass their nursing exams.", icon: "📈" },
-        { title: "Updated Material", desc: "Stay current with the latest nursing curriculum.", icon: "🔄" },
-        { title: "Budget Friendly", desc: "Competitive pricing for high-quality study materials.", icon: "💰" }
+    // Split products for two rails if available, else just use placeholders
+    const topRowProducts = products.slice(0, 4);
+    const bottomRowProducts = products.slice(4, 8);
+
+    const placeholderBooks = [
+        { id: 1, title: "An Introduction to Human Disease", price: "59.95", tag: "Bestseller", category: "Pathology" },
+        { id: 2, title: "Advanced Medical Surgical Nursing", price: "64.95", tag: "New Edition", category: "Med-Surg" },
+        { id: 3, title: "Human Disease Study Guide", price: "49.95", tag: "Popular", category: "Study Guide" },
+        { id: 4, title: "NCLEX Comprehensive Review", price: "79.95", tag: "Essential", category: "NCLEX" }
     ];
 
     return (
-        <div className="min-h-screen bg-white font-sans" style={{ fontFamily: "'Inter', sans-serif" }}>
+        <div className="min-h-screen bg-white font-sans text-slate-800" style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
             <Navbar />
-
-            {/* Spacer for fixed navbar */}
-            <div style={{ height: '60px' }}></div>
 
             <main>
                 {/* Hero Section */}
-                <section className="bg-white py-20 px-4">
-                    <div className="max-w-screen-xl mx-auto flex flex-col lg:flex-row items-center gap-12">
+                <section className="bg-gradient-to-r from-blue-50/40 to-white pt-16 pb-24 px-4 overflow-hidden relative">
+                    <div className="absolute top-0 right-0 w-1/2 h-full bg-blue-50/30 rounded-bl-[100px] -z-10"></div>
+                    <div className="max-w-[1440px] mx-auto flex flex-col lg:flex-row items-center gap-16 relative z-10">
                         {/* Left text */}
-                        <div className="flex-1 max-w-xl">
-                            <h1 className="text-4xl lg:text-5xl font-extrabold text-gray-900 leading-tight mb-5">
-                                Real Test Banks. Real Questions.{' '}
-                                <span className="text-blue-700">Real Results.</span>
+                        <div className="flex-1 max-w-xl xl:max-w-2xl px-4 lg:px-8">
+                            <h1 className="text-5xl lg:text-[4rem] font-extrabold text-[#111827] leading-[1.1] mb-8 tracking-tight">
+                                Real Test Banks. Real Questions. <br className="hidden lg:block" />
+                                <span className="text-blue-700 italic font-black">Real Results.</span>
                             </h1>
-                            <p className="text-gray-600 text-base leading-relaxed mb-8">
-                                Comprehensive nursing study resources, practice exams, and test banks to help you excel in your studies and career.
+                            <p className="text-gray-700 text-[1.1rem] leading-relaxed mb-6 font-medium">
+                                Crafted specifically for nursing students aiming for top grades, our high-quality test banks offer a reliable and accurate way to check your understanding and prepare for exams.
                             </p>
-                            <div className="flex flex-wrap gap-3">
-                                <Link
-                                    to="/onboarding"
-                                    className="px-6 py-3 bg-blue-700 text-white font-bold text-sm rounded-lg hover:bg-blue-800 transition-all shadow-md"
-                                >
-                                    Try Now
-                                </Link>
-                                <Link
-                                    to="/test-bank"
-                                    className="px-6 py-3 bg-white text-gray-800 font-bold text-sm rounded-lg border border-gray-300 hover:border-blue-600 hover:text-blue-700 transition-all"
-                                >
-                                    Search Test Bank
-                                </Link>
-                            </div>
+                            <p className="text-gray-600 text-[1.05rem] leading-relaxed mb-10">
+                                Whether you're tackling health classes, biology, or core nursing courses, our guide is your ultimate companion to pass smarter, stay ahead, and reach your goals faster.
+                            </p>
                         </div>
 
-                        {/* Right image placeholder */}
-                        <div className="flex-1 max-w-lg">
-                            <div className="w-full h-64 lg:h-80 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-200">
-                                <svg className="w-24 h-24" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M12 2a5 5 0 100 10A5 5 0 0012 2zm0 12c-5.33 0-8 2.67-8 4v2h16v-2c0-1.33-2.67-4-8-4z"/>
-                                </svg>
+                        {/* Right image */}
+                        <div className="flex-1 w-full max-w-2xl px-4">
+                            <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl border-4 border-white transform lg:rotate-2 hover:rotate-0 transition-transform duration-500">
+                                <img
+                                    src="https://images.unsplash.com/photo-1576091160550-2173ff9e5eb3?auto=format&fit=crop&w=1200&q=80"
+                                    alt="Nursing Student Studying"
+                                    className="w-full h-full object-cover"
+                                />
+                                {/* Overlay gradient */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                             </div>
                         </div>
                     </div>
                 </section>
 
                 {/* Why Students Choose Us */}
-                <section className="bg-gray-50 py-16 px-4">
-                    <div className="max-w-screen-xl mx-auto text-center">
-                        <h2 className="text-2xl font-bold text-gray-900 mb-2">Why Students Choose Us</h2>
-                        <div className="w-12 h-1 bg-blue-700 mx-auto mb-10 rounded-full"></div>
-                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-                            {features.map((f, i) => (
-                                <div key={i} className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
-                                    <div className="text-3xl mb-3">{f.icon}</div>
-                                    <h3 className="font-bold text-gray-900 text-sm mb-2">{f.title}</h3>
-                                    <p className="text-gray-500 text-xs leading-relaxed">{f.desc}</p>
+                <section className="bg-[#EBF4FF] py-16 px-4 border-y border-blue-100">
+                    <div className="max-w-[1440px] mx-auto px-4 lg:px-8">
+                        <div className="flex items-center gap-4 mb-10">
+                            <h2 className="text-2xl lg:text-3xl font-bold text-[#111827]">Why Students Choose Us</h2>
+                            <div className="h-1 flex-1 max-w-[100px] bg-blue-600 rounded-full hidden sm:block"></div>
+                        </div>
+
+                        <div className="grid md:grid-cols-3 gap-10">
+                            <div className="flex items-start gap-5">
+                                <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center flex-shrink-0 shadow-sm text-blue-600">
+                                    <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
                                 </div>
-                            ))}
+                                <div>
+                                    <h3 className="text-[1.1rem] font-bold text-[#111827] mb-2">Proven High Success Rate</h3>
+                                    <p className="text-gray-600 text-[0.95rem] leading-relaxed">Used by thousands of students to pass their nursing exams with ease.</p>
+                                </div>
+                            </div>
+                            <div className="flex items-start gap-5">
+                                <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center flex-shrink-0 shadow-sm text-blue-600">
+                                    <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+                                </div>
+                                <div>
+                                    <h3 className="text-[1.1rem] font-bold text-[#111827] mb-2">Reliable Materials</h3>
+                                    <p className="text-gray-600 text-[0.95rem] leading-relaxed">Stay current with the latest nursing templates and curriculum resources.</p>
+                                </div>
+                            </div>
+                            <div className="flex items-start gap-5">
+                                <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center flex-shrink-0 shadow-sm text-blue-600">
+                                    <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" /></svg>
+                                </div>
+                                <div>
+                                    <h3 className="text-[1.1rem] font-bold text-[#111827] mb-2">Cost-Effective Pricing</h3>
+                                    <p className="text-gray-600 text-[0.95rem] leading-relaxed">Competitive pricing for high-quality, comprehensive study materials.</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>
 
-                {/* Featured Test Banks */}
-                <section className="bg-white py-14 px-4">
-                    <div className="max-w-screen-xl mx-auto">
-                        <div className="flex justify-between items-end mb-8">
-                            <div>
-                                <h2 className="text-xl font-bold text-gray-900">Featured Test Banks</h2>
-                                <p className="text-gray-500 text-sm mt-1">
-                                    Our most trusted resources, updated for 2024 to ensure you have the latest information.
-                                </p>
-                            </div>
-                            <Link to="/test-bank" className="text-blue-700 text-sm font-semibold hover:underline flex items-center gap-1">
-                                View All Resources
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/></svg>
-                            </Link>
+                {/* Featured Test Banks - Row 1 */}
+                <section className="bg-white py-20 px-4">
+                    <div className="max-w-[1440px] mx-auto px-4 lg:px-8">
+                        <div className="text-center mb-12">
+                            <h2 className="text-2xl font-bold text-[#111827] mb-2">Featured Test Banks</h2>
+                            <div className="w-16 h-1 bg-blue-600 mx-auto rounded-full"></div>
                         </div>
 
                         {loading ? (
-                            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
-                                {[1,2,3,4].map(i => (
-                                    <div key={i} className="bg-gray-100 rounded-xl h-64 animate-pulse"></div>
-                                ))}
-                            </div>
-                        ) : products.length > 0 ? (
-                            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
-                                {products.map((product) => (
-                                    <ProductCard key={product.id} product={product} />
-                                ))}
+                            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+                                {[1, 2, 3, 4].map(i => <div key={i} className="bg-gray-100 rounded-xl h-[400px] animate-pulse"></div>)}
                             </div>
                         ) : (
-                            // Placeholder cards if API offline
-                            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
-                                {['Pathophysiology Test Bank', 'Advanced NUR', 'Human Disease Study Guide', 'NCLEX Review'].map((title, i) => (
-                                    <div key={i} className="bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                                        <div className="h-40 bg-blue-50 flex items-center justify-center">
-                                            <div className="text-5xl">📗</div>
-                                        </div>
-                                        <div className="p-4">
-                                            <p className="text-xs font-semibold text-gray-800 mb-1 leading-snug">{title}</p>
-                                            <p className="text-blue-700 font-bold text-sm mb-3">$59.95</p>
-                                            <button className="w-full py-2 bg-blue-700 text-white text-xs font-bold rounded-lg hover:bg-blue-800 transition-all">
-                                                View Details
-                                            </button>
-                                        </div>
-                                    </div>
+                            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+                                {(topRowProducts.length > 0 ? topRowProducts : placeholderBooks).map((product, i) => (
+                                    <ProductCard key={product.id || i} product={product} />
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </section>
+
+                {/* Designed for High-Pressure Programs */}
+                <section className="relative w-full bg-white overflow-hidden py-16 md:py-24 min-h-[600px] flex items-center border-t border-gray-100">
+                    {/* Background Image (Right side with fade mask) */}
+                    <div className="absolute inset-y-0 right-0 w-full md:w-[65%] lg:w-[60%] z-0">
+                        {/* Soft white gradient fading from the left to seamlessly blend the image */}
+                        <div className="absolute inset-y-0 left-0 w-full md:w-[60%] bg-gradient-to-r from-white via-white/90 to-transparent z-10 pointer-events-none"></div>
+
+                        {/* Mobile overlay to ensure text is readable if image stacks */}
+                        <div className="absolute inset-0 bg-white/80 md:hidden z-10"></div>
+
+                        <img
+                            src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=2000&q=80"
+                            alt="Students Studying Together"
+                            className="w-full h-full object-cover object-center"
+                        />
+                    </div>
+
+                    {/* Content Container */}
+                    <div className="relative z-20  mx-auto px-4 sm:px-6 lg:px-8 w-full">
+                        <div className="w-full md:w-[60%] lg:w-[50%] pr-0 lg:pr-8 py-8">
+
+                            {/* Top Section */}
+                            <h2 className="text-[#0B2A51] text-2xl sm:text-3xl lg:text-[32px] font-bold mb-8">
+                                Designed for High-Pressure Programs
+                            </h2>
+
+                            <ul className="space-y-4 mb-16">
+                                {[
+                                    'Nursing (RN, BSN, NP, NCLEX Prep)',
+                                    'Health Sciences & Allied Health',
+                                    'Biology & Anatomy/Physiology',
+                                    'Pharmacology & Certification Prep'
+                                ].map((item, i) => (
+                                    <li key={i} className="flex items-center gap-3 text-[#333333] font-medium text-[15px] sm:text-[16px]">
+                                        <svg
+                                            className="w-[22px] h-[22px] text-[#F07B22] flex-shrink-0"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                            strokeWidth={3}
+                                        >
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        {item}
+                                    </li>
+                                ))}
+                            </ul>
+
+                            {/* Bottom Section */}
+                            <h2 className="text-[#0B2A51] text-2xl sm:text-3xl lg:text-[32px] font-bold mb-5">
+                                Study With Confidence (and Integrity)
+                            </h2>
+
+                            <div className="flex flex-col space-y-3">
+                                <p className="italic text-[#555555] text-[15px] sm:text-[16px]">
+                                    Ethical resources to reinforce learning & exam readiness.
+                                </p>
+                                <p className="text-[#333333] text-[15px] sm:text-[16px]">
+                                    Thousands of students use test banks as a <span className="text-[#0B2A51] font-bold">smart supplement.</span>
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+
+                {/* Featured Test Banks - Row 2 */}
+                <section className="bg-white py-20 px-4">
+                    <div className="max-w-[1440px] mx-auto px-4 lg:px-8">
+                        <div className="text-center mb-12">
+                            <h2 className="text-2xl font-bold text-[#111827] mb-2">Featured Test Banks</h2>
+                            <div className="w-16 h-1 bg-blue-600 mx-auto rounded-full"></div>
+                        </div>
+
+                        {loading ? (
+                            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+                                {[1, 2, 3, 4].map(i => <div key={i} className="bg-gray-100 rounded-xl h-[400px] animate-pulse"></div>)}
+                            </div>
+                        ) : (
+                            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+                                {(bottomRowProducts.length > 0 ? bottomRowProducts : placeholderBooks.slice().reverse()).map((product, i) => (
+                                    <ProductCard key={product.id || i} product={product} />
                                 ))}
                             </div>
                         )}
@@ -160,107 +238,202 @@ export default function Welcome() {
                 </section>
 
                 {/* What Students Say */}
-                <section className="bg-gray-50 py-14 px-4">
-                    <div className="max-w-screen-xl mx-auto">
-                        <h2 className="text-2xl font-bold text-gray-900 text-center mb-10 uppercase tracking-wide">What Students Say</h2>
-                        <div className="grid md:grid-cols-3 gap-6">
-                            {[
-                                { name: "Sarah J.", role: "RN Graduate", text: "Passed my NCLEX on the first try! The rationales here are better than any textbook.", rating: 5 },
-                                { name: "Michael T.", role: "Final Year Student", text: "The instant download is a lifesaver. High quality PDFs exactly what I needed.", rating: 5 },
-                                { name: "Emma R.", role: "BSRN Student", text: "Finding the exact test bank for my Fundamentals class changed everything. 5 stars!", rating: 5 }
-                            ].map((t, i) => (
-                                <div key={i} className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
-                                    <div className="flex text-yellow-400 mb-3">
-                                        {[...Array(t.rating)].map((_, s) => <span key={s}>★</span>)}
-                                    </div>
-                                    <p className="text-gray-700 text-sm italic mb-4 leading-relaxed">"{t.text}"</p>
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-9 h-9 bg-blue-100 rounded-full flex items-center justify-center text-blue-700 font-bold text-sm">{t.name[0]}</div>
+
+                <section className="relative w-full bg-white overflow-hidden py-16 md:py-24 min-h-[600px] flex items-center">
+                    {/* Background Image (Right side with fade mask) */}
+                    <div className="absolute inset-y-0 right-0 w-full md:w-[65%] lg:w-[60%] z-0">
+                        {/* Soft white gradient fading from the left to seamlessly blend the image */}
+                        <div className="absolute inset-y-0 left-0 w-full md:w-1/2 bg-gradient-to-r from-white via-white/80 to-transparent z-10 pointer-events-none"></div>
+
+                        {/* Mobile overlay to ensure text is readable if image stacks */}
+                        <div className="absolute inset-0 bg-white/60 md:hidden z-10"></div>
+
+                        <img
+                            src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=2000&q=80"
+                            alt="Medical Students and Professionals"
+                            className="w-full h-full object-cover object-center"
+                        />
+                    </div>
+
+                    {/* Content Container */}
+                    <div className="relative z-20  mx-auto px-4 sm:px-6 lg:px-8 w-full">
+                        <div className="w-full md:w-[60%] lg:w-[50%] pr-0 lg:pr-8">
+
+                            <h2 className="text-[#0B2A51] text-3xl font-bold mb-10">
+                                What Students Say
+                            </h2>
+
+                            {/* Testimonial Card 1 */}
+                            <div
+                                className="relative mb-8"
+                                style={{ filter: 'drop-shadow(0px 8px 24px rgba(0,0,0,0.06))' }}
+                            >
+                                <div className="bg-white rounded-xl p-6 sm:p-8 relative z-10">
+                                    <div className="flex items-start">
+                                        <div className="text-[#1A4B84] text-5xl font-serif font-bold leading-[0.6] mr-4 pt-2">
+                                            “
+                                        </div>
                                         <div>
-                                            <div className="font-bold text-gray-900 text-sm">{t.name}</div>
-                                            <div className="text-gray-400 text-xs">{t.role}</div>
+                                            <p className="text-gray-800 font-medium text-[15px] sm:text-[16px] leading-relaxed mb-4">
+                                                The questions were almost identical in difficulty to my exam. The rationales made everything click. ”
+                                            </p>
+                                            <p className="text-gray-500 text-[13px] sm:text-sm font-medium">
+                                                — Nursing Student, California
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
-                            ))}
+                                {/* Right Arrow Pointer (Hidden on small screens) */}
+                                <div className="hidden md:block absolute top-1/2 -right-3 -translate-y-1/2 w-6 h-6 bg-white rotate-45 z-0"></div>
+                            </div>
+
+                            {/* Testimonial Card 2 */}
+                            <div
+                                className="relative"
+                                style={{ filter: 'drop-shadow(0px 8px 24px rgba(0,0,0,0.06))' }}
+                            >
+                                <div className="bg-white rounded-xl p-6 sm:p-8 relative z-10">
+                                    <div className="flex items-start">
+                                        <div className="text-[#1A4B84] text-5xl font-serif font-bold leading-[0.6] mr-4 pt-2">
+                                            “
+                                        </div>
+                                        <div>
+                                            <p className="text-gray-800 font-medium text-[15px] sm:text-[16px] leading-relaxed mb-4">
+                                                I stopped wasting time and finally knew what to focus on. My grades jumped fast. ”
+                                            </p>
+                                            <p className="text-gray-500 text-[13px] sm:text-sm font-medium">
+                                                — Health Sciences Major
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                {/* Right Arrow Pointer (Hidden on small screens) */}
+                                <div className="hidden md:block absolute top-1/2 -right-3 -translate-y-1/2 w-6 h-6 bg-white rotate-45 z-0"></div>
+                            </div>
+
                         </div>
                     </div>
+                </section>
+
+                {/* Final Call to Action CTA */}
+                <section className="bg-blue-600 py-12 px-4 text-center">
+                    <Link to="/test-bank" className="inline-block px-8 py-4 bg-orange-500 text-white font-bold text-lg rounded-xl shadow-[0_4px_14px_0_rgba(249,115,22,0.39)] hover:bg-orange-600 transition-all transform hover:scale-105">
+                        Start Studying Smarter Now
+                    </Link>
                 </section>
 
                 {/* FAQs */}
-                <section className="bg-white py-14 px-4">
-                    <div className="max-w-3xl mx-auto">
-                        <h2 className="text-2xl font-bold text-gray-900 text-center mb-2">Nursing Test Bank FAQs</h2>
-                        <p className="text-center text-gray-500 text-sm mb-10">Common questions about our nursing study resources.</p>
-                        <div className="space-y-4">
-                            {faqs.map((faq, i) => (
-                                <div key={i} className="border border-gray-200 rounded-xl p-6">
-                                    <h3 className="font-bold text-gray-900 mb-2 text-base">{faq.q}</h3>
-                                    <p className="text-gray-600 text-sm leading-relaxed">{faq.a}</p>
-                                </div>
-                            ))}
+                <section className="bg-[#f8fafc] py-20 px-4">
+                    <div className="max-w-[800px] mx-auto text-center">
+                        <div className="inline-block px-4 py-1.5 bg-blue-100 text-blue-700 font-bold text-xs rounded-full mb-4">FAQs</div>
+                        <h2 className="text-3xl font-extrabold text-[#111827] mb-6">Nursing Test Bank FAQs</h2>
+                        <p className="text-gray-600 leading-relaxed text-[1.05rem] mb-12">
+                            Have questions? We are ready to help! Here are a few commonly asked questions.
+                            Our team is dedicated to providing you the best experience to ensure your educational success.
+                            If you still need help after reading this FAQ, please don't hesitate to reach out to our support team!
+                        </p>
+
+                        <div className="bg-white border border-gray-200 rounded-2xl shadow-sm text-center">
+                            <button className="w-full py-5 px-6 font-bold text-blue-600 hover:text-blue-800 transition-colors">
+                                See All Questions and Answers
+                            </button>
                         </div>
                     </div>
                 </section>
 
-                {/* Request a Test Bank CTA */}
-                <section className="bg-blue-50 py-14 px-4">
-                    <div className="max-w-screen-xl mx-auto flex flex-col lg:flex-row items-center gap-10">
-                        <div className="flex-1">
-                            <h2 className="text-2xl font-bold text-gray-900 mb-3">Looking for a specific Test Bank?</h2>
-                            <p className="text-gray-600 text-sm leading-relaxed mb-4">
-                                If you can't find what you're looking for, let us know. We add new resources regularly based on student requests.
+                {/* Request a Test Bank */}
+                <section className="bg-blue-300/30 py-20 px-4 mt-8">
+                    <div className="max-w-[1440px] mx-auto px-4 lg:px-8 flex flex-col lg:flex-row items-center gap-12">
+                        <div className="flex-1 max-w-xl">
+                            <h2 className="text-3xl font-bold text-[#111827] mb-4">Looking for a specific test bank!</h2>
+                            <p className="text-gray-700 text-[1.1rem] leading-relaxed mb-6">
+                                If you can't find what you're looking for, let us know. We'll help you find the exact resource you need for your course.
                             </p>
-                            <Link to="/contact" className="inline-block px-6 py-3 bg-blue-700 text-white font-bold text-sm rounded-lg hover:bg-blue-800 transition-all">
-                                Submit a Request
+                            <Link to="/contact" className="inline-block px-8 py-3 bg-[#0f172a] text-white font-bold text-sm rounded-lg hover:bg-slate-800 transition-all shadow-md">
+                                Request missing Test Bank
                             </Link>
                         </div>
-                        <div className="flex-1 max-w-sm w-full">
-                            <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm space-y-3">
-                                <input type="text" placeholder="Name" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm outline-none focus:border-blue-500 transition-colors" />
-                                <input type="email" placeholder="Email" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm outline-none focus:border-blue-500 transition-colors" />
-                                <input type="text" placeholder="Test bank name or ISBN" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm outline-none focus:border-blue-500 transition-colors" />
-                                <button className="w-full py-2.5 bg-blue-700 text-white font-bold text-sm rounded-lg hover:bg-blue-800 transition-all">
+                        <div className="flex-1 w-full flex justify-end">
+                            <div className="bg-white rounded-2xl p-8 shadow-xl w-full max-w-lg space-y-4">
+                                <div className="grid grid-cols-2 gap-4">
+                                    <input type="text" placeholder="First Name" className="w-full border-2 border-gray-100 rounded-lg px-4 py-3 text-sm focus:border-blue-500 outline-none transition-colors bg-gray-50" />
+                                    <input type="text" placeholder="Last Name" className="w-full border-2 border-gray-100 rounded-lg px-4 py-3 text-sm focus:border-blue-500 outline-none transition-colors bg-gray-50" />
+                                </div>
+                                <input type="email" placeholder="Student Email Address" className="w-full border-2 border-gray-100 rounded-lg px-4 py-3 text-sm focus:border-blue-500 outline-none transition-colors bg-gray-50" />
+                                <textarea placeholder="Test block name or ASIN, course info, etc" rows="4" className="w-full border-2 border-gray-100 rounded-lg px-4 py-3 text-sm focus:border-blue-500 outline-none transition-colors bg-gray-50 resize-none"></textarea>
+                                <button className="w-full py-4 bg-blue-600 text-white font-bold text-[1.05rem] rounded-lg hover:bg-blue-700 transition-all shadow-lg hover:shadow-blue-600/30">
                                     Submit Request
                                 </button>
                             </div>
                         </div>
                     </div>
                 </section>
+
+                {/* Bottom Legal Disclaimer */}
+                <section style={{
+                    background: '#fffbeb',
+                    borderTop: '1px solid #fef3c7',
+                    padding: '24px',
+                    color: '#92400e'
+                }}>
+                    <div style={{ maxWidth: '1440px', margin: '0 auto', display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+                        <div style={{ flexShrink: 0, marginTop: '2px' }}>
+                            <svg className="w-6 h-6 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                        </div>
+                        <div style={{ flex: 1, fontSize: '12px', lineHeight: '1.6' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                                <span style={{ fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Legal Disclaimer</span>
+                                <span style={{ background: '#fef3c7', color: '#b45309', padding: '2px 8px', borderRadius: '9999px', fontSize: '10px', fontWeight: 800 }}>Important Notice</span>
+                            </div>
+                            <p style={{ marginBottom: '4px' }}>
+                                The content provided on <strong>Nursing Study Source</strong> is for educational and informational purposes only. All practice questions, study materials, and resources are designed to support learning and exam preparation.
+                                We do not guarantee that the materials are complete, error-free, or identical to any official nursing examination. Nursing Study Source is <strong>not affiliated with or endorsed by</strong> any licensing board, testing authority, or educational institution.
+                            </p>
+                            <p>
+                                Users are responsible for verifying information and using it appropriately. We are <strong>not liable</strong> for any outcomes resulting from the use of this website.
+                            </p>
+                        </div>
+                    </div>
+                </section>
             </main>
 
             {/* Footer */}
-            <footer className="bg-blue-900 text-white pt-14 pb-8 px-4">
-                <div className="max-w-screen-xl mx-auto">
-                    <div className="grid md:grid-cols-4 gap-10 mb-10">
-                        <div>
-                            <div className="flex items-center gap-2 mb-4">
-                                <div className="w-8 h-8 border-2 border-white/40 rounded-lg flex items-center justify-center text-sm">📖</div>
-                                <span className="font-bold text-sm">Nursing Study Source</span>
-                            </div>
-                            <p className="text-blue-200 text-xs leading-relaxed">
-                                info@nursingexamsource.com<br />
-                                505-570-3017
-                            </p>
-                        </div>
-
-                        {[
-                            { title: 'Explore', links: [{ label: 'Test Bank', to: '/test-bank' }, { label: 'Online Test Bank', to: '/online-test-bank' }, { label: 'Plans', to: '/plans' }, { label: 'Blog', to: '/blog' }] },
-                            { title: 'Support', links: [{ label: 'Contact', to: '/contact' }, { label: 'Refund Policy', to: '/refund-policy' }, { label: 'About Us', to: '/about' }] },
-                            { title: 'Policy', links: [{ label: 'Privacy Policy', to: '/privacy-policy' }, { label: 'Terms & Conditions', to: '/terms' }, { label: 'Disclaimer', to: '/disclaimer' }] }
-                        ].map((col, i) => (
-                            <div key={i}>
-                                <h4 className="font-bold text-xs uppercase tracking-widest mb-4 text-blue-100">{col.title}</h4>
-                                <div className="flex flex-col gap-2">
-                                    {col.links.map((link) => (
-                                        <Link key={link.to} to={link.to} className="text-blue-300 hover:text-white text-xs transition-colors">{link.label}</Link>
-                                    ))}
-                                </div>
-                            </div>
-                        ))}
+            <footer className="bg-[#f0f4f8] text-[#334155] border-t border-gray-200 pt-16 pb-8 px-4">
+                <div className="max-w-[1440px] mx-auto px-4 lg:px-8 flex flex-col items-center lg:items-start lg:flex-row justify-between gap-12 font-medium">
+                    <div className="text-center lg:text-left">
+                        <h3 className="font-extrabold text-[#111827] text-lg mb-2 uppercase tracking-wide">Nursing<br />Exam Source</h3>
+                        <p className="text-sm text-gray-500 mb-6 max-w-xs">
+                            Dedicated to providing the best study materials, practice questions and test resources available on the web for nursing specialists.
+                        </p>
                     </div>
-                    <div className="border-t border-blue-800 pt-6 text-blue-400 text-xs text-center">
-                        © {new Date().getFullYear()} Nursing Study Source. All rights reserved.
+
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-12 lg:gap-24 text-sm">
+                        <div className="flex flex-col gap-3">
+                            <h4 className="font-bold text-[#111827] uppercase tracking-wider mb-2">Explore</h4>
+                            <Link to="/test-bank" className="hover:text-blue-600">Test Bank</Link>
+                            <Link to="/online-test-bank" className="hover:text-blue-600">Online Test Bank</Link>
+                            <Link to="/blog" className="hover:text-blue-600">Blog</Link>
+                        </div>
+                        <div className="flex flex-col gap-3">
+                            <h4 className="font-bold text-[#111827] uppercase tracking-wider mb-2">Support</h4>
+                            <Link to="/contact" className="hover:text-blue-600">Request A Test Bank</Link>
+                            <Link to="/contact" className="hover:text-blue-600">Contact</Link>
+                        </div>
+                        <div className="flex flex-col gap-3 col-span-2 md:col-span-1">
+                            <h4 className="font-bold text-[#111827] uppercase tracking-wider mb-2">Policies</h4>
+                            <Link to="/privacy-policy" className="hover:text-blue-600">Privacy Policy</Link>
+                            <Link to="/refund-policy" className="hover:text-blue-600">Refund Policy</Link>
+                            <Link to="/terms" className="hover:text-blue-600">Terms & Conditions</Link>
+                            <Link to="/disclaimer" className="hover:text-blue-600">Disclaimer</Link>
+                            <Link to="/sitemap" className="hover:text-blue-600">Sitemap</Link>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="max-w-[1440px] mx-auto px-4 lg:px-8 mt-16 pt-8 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center text-xs text-gray-400">
+                    <p>© {new Date().getFullYear()} Nursing Exam Source. All rights reserved.<br />No affiliation with publisher brands.</p>
+                    <div className="flex items-center gap-4 mt-4 md:mt-0 text-gray-500">
+                        <a href="mailto:info@nursingexamsource.com" className="hover:text-blue-600">info@nursingexamsource.com</a>
                     </div>
                 </div>
             </footer>

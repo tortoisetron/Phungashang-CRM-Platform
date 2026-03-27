@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Auth\SocialiteController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -58,4 +59,7 @@ Route::post('/exams/{exam}/submit', function (\App\Models\Exam $exam, \Illuminat
     return Inertia::render('Results', $results);
 })->name('exam.submit');
 
-require __DIR__.'/auth.php';
+// require __DIR__.'/auth.php';
+
+Route::get('/auth/google', [SocialiteController::class, 'redirect']);
+Route::get('/auth/google/callback', [SocialiteController::class, 'callback']);
