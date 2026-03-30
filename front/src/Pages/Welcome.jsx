@@ -40,7 +40,7 @@ export default function Welcome() {
 
     // Split products for two rails if available, else just use placeholders
     const topRowProducts = products.slice(0, 4);
-    const bottomRowProducts = products.slice(4, 8);
+    const bottomRowProducts = products.slice(3, 7);
 
     const placeholderBooks = [
         { id: 1, title: "An Introduction to Human Disease", price: "59.95", tag: "Bestseller", category: "Pathology" },
@@ -76,7 +76,7 @@ export default function Welcome() {
                         <div className="flex-1 w-full max-w-2xl px-4">
                             <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl border-4 border-white transform lg:rotate-2 hover:rotate-0 transition-transform duration-500">
                                 <img
-                                    src="https://images.unsplash.com/photo-1576091160550-2173ff9e5eb3?auto=format&fit=crop&w=1200&q=80"
+                                    src="https://plus.unsplash.com/premium_photo-1663047392930-7c1c31d7b785?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                                     alt="Nursing Student Studying"
                                     className="w-full h-full object-cover"
                                 />

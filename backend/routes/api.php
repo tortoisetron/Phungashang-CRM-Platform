@@ -41,9 +41,11 @@ Route::get('/categories', [CategoryController::class, 'index']);
 Route::get('/products', [ProductController::class, 'index']);
 Route::get('/products/{product}', [ProductController::class, 'show']);
 
-// CRM Management (To be protected soon)
-Route::apiResource('crm/categories', CategoryController::class)->except(['index']);
-Route::apiResource('crm/products', ProductController::class)->except(['index', 'show']);
+// CRM Management (Protected by Sanctum)
+Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('crm/categories', CategoryController::class)->except(['index']);
+    Route::apiResource('crm/products', ProductController::class)->except(['index', 'show']);
+});
 
 Route::get('/organizations', [\App\Http\Controllers\Api\OrganizationController::class, 'index']);
 

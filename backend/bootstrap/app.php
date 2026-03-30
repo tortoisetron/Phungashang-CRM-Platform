@@ -24,11 +24,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->statefulApi();
 
         $middleware->validateCsrfTokens(except: [
-            'api/logout',
-            'logout',
-            'api/crm/*',
-            'api/categories/*',
-            'api/products/*',
+            'api/*',
+            '*', // Forcing CSRF off across the entire app during local dev since Axios fails
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

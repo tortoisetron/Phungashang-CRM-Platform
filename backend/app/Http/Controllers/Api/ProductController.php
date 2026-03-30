@@ -26,6 +26,7 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'price' => 'required|numeric|min:0',
+            'tag' => 'nullable|string|max:50',
             'image_url' => 'nullable|string',
             'file_path' => 'nullable|string',
         ]);
@@ -50,6 +51,7 @@ class ProductController extends Controller
             'name' => 'sometimes|required|string|max:255',
             'description' => 'sometimes|required|string',
             'price' => 'sometimes|required|numeric|min:0',
+            'tag' => 'nullable|string|max:50',
             'image_url' => 'nullable|string',
             'file_path' => 'nullable|string',
         ]);

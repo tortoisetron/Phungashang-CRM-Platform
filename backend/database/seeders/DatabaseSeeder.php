@@ -16,27 +16,69 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $user = User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'Admin User',
+            'email' => 'admin@organisation.com',
             'password' => bcrypt('password'),
+            'role' => 'admin',
         ]);
 
-        $category = \App\Models\Category::create([
-            'name' => 'Pathophysiology',
-            'slug' => 'pathophysiology',
-            'description' => 'Comprehensive study of disordered physiological processes.',
+        $org = \App\Models\Organization::create([
+            'name' => 'Nursing Source HQ',
+            'email' => 'admin@organisation.com',
+            'admin_id' => $user->id,
+        ]);
+
+        $user->update(['organization_id' => $org->id]);
+
+        $categories = [
+            'nclex' => \App\Models\Category::create(['name' => 'NCLEX', 'slug' => 'nclex', 'description' => 'NCLEX Exam materials.']),
+            'study-guide' => \App\Models\Category::create(['name' => 'Study Guide', 'slug' => 'study-guide', 'description' => 'General study guides.']),
+            'med-surg' => \App\Models\Category::create(['name' => 'Med-Surg', 'slug' => 'med-surg', 'description' => 'Medical-Surgical Nursing.']),
+            'pathology' => \App\Models\Category::create(['name' => 'Pathology', 'slug' => 'pathology', 'description' => 'Pathology Nursing.']),
+        ];
+
+        \App\Models\Product::create([
+            'category_id' => $categories['pathology']->id,
+            'name' => 'An Introduction to Human Disease',
+            'description' => 'Comprehensive book covering human diseases and pathology.',
+            'price' => 59.95,
+            'tag' => 'Bestseller',
+            'image_url' => null,
+            'created_at' => now()->subMinutes(4),
         ]);
 
         \App\Models\Product::create([
-            'category_id' => $category->id,
-            'name' => 'Pathophysiology Test Bank 2024',
-            'description' => 'Over 500+ questions with rationales for Pathophysiology.',
-            'price' => 49.99,
-            'image_url' => 'https://placehold.co/400x600?text=Pathophysiology+2024',
+            'category_id' => $categories['med-surg']->id,
+            'name' => 'Advanced Medical Surgical Nursing',
+            'description' => 'Advanced nursing principles and practices.',
+            'price' => 64.95,
+            'tag' => 'New Edition',
+            'image_url' => null,
+            'created_at' => now()->subMinutes(3),
+        ]);
+
+        \App\Models\Product::create([
+            'category_id' => $categories['study-guide']->id,
+            'name' => 'Human Disease Study Guide',
+            'description' => 'Essential study guide for human disease.',
+            'price' => 49.95,
+            'tag' => 'Popular',
+            'image_url' => null,
+            'created_at' => now()->subMinutes(2),
+        ]);
+
+        \App\Models\Product::create([
+            'category_id' => $categories['nclex']->id,
+            'name' => 'NCLEX Comprehensive Review',
+            'description' => 'The ultimate preparation package for NCLEX.',
+            'price' => 79.95,
+            'tag' => 'Essential',
+            'image_url' => null,
+            'created_at' => now()->subMinutes(1),
         ]);
 
         $exam = \App\Models\Exam::create([
-            'category_id' => $category->id,
+            'category_id' => $categories['pathology']->id,
             'title' => 'Pathophysiology Practice Quiz',
             'description' => 'A sample quiz to test your knowledge of cellular regulation.',
             'time_limit' => 10,

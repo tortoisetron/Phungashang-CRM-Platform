@@ -13,6 +13,12 @@ if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php'))
 // Register the Composer autoloader...
 require __DIR__.'/../vendor/autoload.php';
 
+if (!function_exists('request_parse_body')) {
+    function request_parse_body() {
+        return [$_POST, $_FILES];
+    }
+}
+
 // Bootstrap Laravel and handle the request...
 /** @var Application $app */
 $app = require_once __DIR__.'/../bootstrap/app.php';
